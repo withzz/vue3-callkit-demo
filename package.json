@@ -1,0 +1,20 @@
+{
+  "name": "vue3-callkit-demo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@xkit-yx/call-kit": "^2.1.2",
+    "@yxim/nim-web-sdk": "^9.8.0",
+    "nertc-web-sdk": "^5.5.10",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "vite": "^4.4.11"
+  }
+}
