@@ -9,10 +9,10 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      'nertc-web-sdk': path.resolve(__dirname, 'node_modules/nertc-web-sdk'),
-    }
-  }
+//   resolve: {
+//     alias: {
+//       '@': fileURLToPath(new URL('./src', import.meta.url)),
+//       'nertc-web-sdk': path.resolve(__dirname, 'node_modules/nertc-web-sdk'),
+//     }
+//   }
 })

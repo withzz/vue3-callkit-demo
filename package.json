@@ -8,9 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@xkit-yx/call-kit": "^2.1.2",
+    "@xkit-yx/call-kit": "^2.1.3",
     "@yxim/nim-web-sdk": "^9.8.0",
-    "nertc-web-sdk": "^5.5.10",
     "vue": "^3.3.4"
   },
   "devDependencies": {
