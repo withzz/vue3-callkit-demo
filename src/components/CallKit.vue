@@ -9,6 +9,7 @@ const accId = ref('')
 const token = ref('')
 const callee = ref('')
 const message = ref('')
+const flag = ref(1)
 
 const login = () => {
     const im = NIM.getInstance({
@@ -60,11 +61,90 @@ const call = () => {
     const remoteView = document.getElementById('NE_remote')
     neCall.setLocalView(localView)
     neCall.setRemoteView(remoteView, callee.value)
-    neCall.setTimeout({ callTimeout: 30000, rejectTimeout: 30000 })//主叫和被叫均要设置
+    neCall.setTimeout(30)//设置呼叫超时取消时间，单位：秒
     neCall.call({
         accId: callee.value, // 被叫 im 的 id
         callType: '2', //呼叫类型，1表示语音通话，2表示视频通话 
     })
+}
+
+const maxRender = () => {
+    const localView = document.getElementById('NE_local')
+    localView.style.height = '640px'
+    localView.style.width = '720px'
+    neCall.rtcController.localStream.setLocalRenderMode({
+        width: 720,
+        height: 640,
+        cut: true
+    })
+
+    const remoteView = document.getElementById('NE_remote')
+    remoteView.style.height = '480px'
+    remoteView.style.width = '640px'
+    neCall.rtcController.remoteStreams[0].setRemoteRenderMode({
+        width: 640,
+        height: 480,
+        cut: true
+    })
+}
+
+const miniRender = () => {
+    const localView = document.getElementById('NE_local')
+
+    localView.style.height = '480px'
+    localView.style.width = '640px'
+    neCall.rtcController.localStream.setLocalRenderMode({
+        width: 640,
+        height: 480,
+        cut: true
+    })
+
+    const remoteView = document.getElementById('NE_remote')
+
+    remoteView.style.height = '640px'
+    remoteView.style.width = '720px'
+    neCall.rtcController.remoteStreams[0].setRemoteRenderMode({
+        width: 720,
+        height: 640,
+        cut: true
+    })
+}
+
+
+const switchView = () => {
+    const localView = document.getElementById('NE_local')
+    const remoteView = document.getElementById('NE_remote')
+    neCall.rtcController.localStream.stop('video')
+    neCall.rtcController.remoteStreams[0].stop('video')
+    if (flag.value) {
+        neCall.rtcController.localStream.play(remoteView)
+        neCall.rtcController.localStream.setLocalRenderMode({
+            width: 640,
+            height: 480,
+            cut: true
+        })
+        neCall.rtcController.remoteStreams[0].play(localView)
+        neCall.rtcController.remoteStreams[0].setRemoteRenderMode({
+            width: 720,
+            height: 640,
+            cut: true
+        })
+        flag.value = 0
+    } else {
+        neCall.rtcController.localStream.play(localView)
+        neCall.rtcController.localStream.setLocalRenderMode({
+            width: 720,
+            height: 640,
+            cut: true
+        })
+        neCall.rtcController.remoteStreams[0].play(remoteView)
+        neCall.rtcController.remoteStreams[0].setRemoteRenderMode({
+            width: 640,
+            height: 480,
+            cut: true
+        })
+        flag.value = 1
+    }
 }
 
 const accept = () => {
@@ -97,6 +177,9 @@ const hangup = () => {
             <button @click="call">呼叫</button>
             <button @click="accept">接听</button>
             <button @click="hangup">挂断</button>
+            <button @click="miniRender">缩小视图</button>
+            <button @click="maxRender">放大试图</button>
+            <button @click="switchView">切换视图</button>
         </div>
         <div>
             appkey:
@@ -108,7 +191,10 @@ const hangup = () => {
             callee:
             <input type="text" v-model="callee" />
         </div>
-        <div id="NE_local" style="display: inline-block;float: left;width:320px; height:240px">本地视图</div>
-        <div id="NE_remote" style="display: inline-block;float: right;width:320px; height:240px">远端视图</div>
+        <b>本地视图</b>
+        <div id="NE_local" style="width:640px; height:480px; background-color:red;">
+        </div>
+        <b>远端视图</b>
+        <div id="NE_remote" style="width:320px; height:240px; background-color:green;"></div>
     </div>
 </template>
